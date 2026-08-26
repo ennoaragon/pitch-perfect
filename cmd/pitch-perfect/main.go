@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/ennoaragon/pitch-perfect/internal/tuner"
 	"github.com/gordonklaus/portaudio"
 )
@@ -17,12 +16,21 @@ func main() {
 	portaudio.Initialize()
 	defer portaudio.Terminate()
 
-	for range 100{
-		audioSnippet := tuner.Listener()
-		processedAudio := tuner.Procesor(audioSnippet)
-		tuner.Analyze(processedAudio)
+	t := tuner.NewAnalyzer()
+	t.Stream.Start()
+
+	defer t.Stream.Stop()
+	defer t.Stream.Close()
+
+
+	fmt.Println("Listening... Press Ctrl+C to stop.")
+	for {
+		audioSamples := t.Listener()
+		hz := tuner.ProcesorSignal(audioSamples)
+		if hz > 20 {
+			fmt.Printf("\rDetected Frequency: %f Hz ", hz)
+		}
+		//tuner.Analyze(processedAudio)
 	}
-
-
 }
 
