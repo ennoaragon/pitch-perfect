@@ -72,8 +72,6 @@ func ProcesorSignal(audioSamples []float32) float64{
 }
 
 // Analyze checks a frequency against musical standards
-// this will take in the processed audio and output the note
-// also include if the note is flat or sharp or tune
 func Analyze(freq float64 ) AnalyzeResult {
 
 	// Logic to determine if freq note;
@@ -81,13 +79,14 @@ func Analyze(freq float64 ) AnalyzeResult {
 
 	analyzed := AnalyzeResult{Note: note, Octave: octave}
 
-	fmt.Printf("Note: %s \n", analyzed.Note)
+	fmt.Printf("Note: %s Octave %d\n", analyzed.Note, octave)
 
 	return  analyzed
 }
 
 // https://physics.bu.edu/~duffy/sc528_notes03/scale.html
 // fractions found here.
+// https://golem.ph.utexas.edu/category/2010/02/a_look_at_the_mathematical_ori.html
 // This should also return status if near sharp or in tune or out for example,
 // or it could be another func
 func hzToNote ( hz float64) (string, int) {

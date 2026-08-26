@@ -15,3 +15,10 @@ Simple cli tool using golang, to convert a digital signal input from a machine, 
 * make build, to create an exe for system
 * make test
 
+
+
+#### Future
+
+* visualizer graph or musical note
+* analyze a song, come up with some chords from a song,
+
