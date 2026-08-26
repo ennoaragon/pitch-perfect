@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-    fmt.Println("Hello, World!")
     // Endless loop, cycling and always listening,
 	// any sound it'll output its note, sometiems itcan be a mix
 	// it will display it's findings every second,
 	// discard any other aftert the fact
+	// visual sould mabye be some cool wave or sheet ascii art idk something fun
 
 	portaudio.Initialize()
 	defer portaudio.Terminate()
@@ -29,8 +29,8 @@ func main() {
 		hz := tuner.ProcesorSignal(audioSamples)
 		if hz > 20 {
 			fmt.Printf("\rDetected Frequency: %f Hz ", hz)
+			tuner.Analyze(hz)
 		}
-		//tuner.Analyze(processedAudio)
 	}
 }
 

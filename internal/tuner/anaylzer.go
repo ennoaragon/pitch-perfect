@@ -76,16 +76,15 @@ func ProcesorSignal(audioSamples []float32) float64{
 // also include if the note is flat or sharp or tune
 func Analyze(freq float64 ) Result {
 
+	// Logic to determine if freq is flat/sharp/in-tune;
+	// make some hz to note algo
+	// then check if the note is of or not real
+	//note := hzToNote(freq)
+
 	analyzed := Result{Note: "A", Status: "Flat", Frequency: freq}
 
-	fmt.Printf("Note: %s, Status: %s, Freq: %.4f", analyzed.Note, analyzed.Status, analyzed.Frequency)
+	fmt.Printf("Note: %s", analyzed.Note)
 
 	return  analyzed
-    // Logic to determine if freq is flat/sharp/in-tune
 }
 
-func Chk(err error){
-	if err != nil {
-		panic(err)
-	}
-}
