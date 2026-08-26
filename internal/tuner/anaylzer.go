@@ -8,18 +8,18 @@ import (
 	"github.com/madelynnblue/go-dsp/fft"
 )
 
-const FFTsize int = 2048
-const HZSampleRate int = 44100
+const FFTsize int = 2048 //audio samples
+const HZSampleRate int = 44100 //hz
+const UniversalConcertPitch = 440 //hz
 
 type Analyzer struct {
 	Stream *portaudio.Stream
 	Buffer []float32
 }
 
-type Result struct {
+type AnalyzeResult struct {
     Note   string
-    Status string // "In Tune", "Flat", "Sharp"
-	Frequency float64
+    Octave int
 }
 
 
@@ -74,17 +74,35 @@ func ProcesorSignal(audioSamples []float32) float64{
 // Analyze checks a frequency against musical standards
 // this will take in the processed audio and output the note
 // also include if the note is flat or sharp or tune
-func Analyze(freq float64 ) Result {
+func Analyze(freq float64 ) AnalyzeResult {
 
-	// Logic to determine if freq is flat/sharp/in-tune;
-	// make some hz to note algo
-	// then check if the note is of or not real
-	//note := hzToNote(freq)
+	// Logic to determine if freq note;
+	note, octave := hzToNote(freq)
 
-	analyzed := Result{Note: "A", Status: "Flat", Frequency: freq}
+	analyzed := AnalyzeResult{Note: note, Octave: octave}
 
-	fmt.Printf("Note: %s", analyzed.Note)
+	fmt.Printf("Note: %s \n", analyzed.Note)
 
 	return  analyzed
 }
 
+// https://physics.bu.edu/~duffy/sc528_notes03/scale.html
+// fractions found here.
+// This should also return status if near sharp or in tune or out for example,
+// or it could be another func
+func hzToNote ( hz float64) (string, int) {
+
+	noteMap := [12]string{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#","A", "A#", "B" }
+
+	semitoneFromA4 := math.Log2(hz/UniversalConcertPitch) * 12
+
+	roundTone := math.Round(semitoneFromA4)
+
+	midiNote := int(roundTone) + 69
+
+	noteIndex := midiNote % 12
+
+	octave := (midiNote / 12 )-1
+
+	return noteMap[noteIndex], octave
+}
